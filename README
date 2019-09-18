@@ -1,0 +1,14 @@
+# .env
+
+You'll need a `.env` file to get started
+
+```
+SLACK_BOT_TOKEN=<your token>
+SLACK_SIGNING_SECRET=<your secret>
+```
+
+## Usage
+
+Start the app `npm run start`.
+
+Watch for changes with `npm run watch`
