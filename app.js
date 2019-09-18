@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const { App, subtype } = require('@slack/bolt');
-const tmpl = require('reverse-string-template');
 
 const port = process.env.PORT || 8080;
 const circleCIBotId = 'BNGFZ7JTS';
@@ -53,8 +52,9 @@ app.message(subtype('bot_message'), ({ message, say }) => {
 
 app.action(
   { block_id: 'launch_block', action_id: 'launch_to_prod' },
-  async ({ ack, body, context, say }) => {
+  async ({ ack, body, context }) => {
     ack();
+    // here is where I could call some API to promote the build to prod
     const { message, user, actions, channel } = body;
     // remove the button
     await app.client.chat.update({
@@ -73,7 +73,6 @@ app.action(
         }
       ]
     });
-    // say(`<@${user.id}> launched to prod :rocket:`);
   }
 );
 (async () => {
