@@ -17,7 +17,26 @@ app.message(subtype('bot_message'), ({ message, say }) => {
   }
   if (message.attachments && message.attachments[0].text.startsWith('Success')) {
     // successful build lets ask to promote it
-    say('do you wanna deploy?');
+    say({
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: ':pear: The tests have passed for build 123. Shall we deploy it?'
+          },
+          accessory: {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'launch to prod',
+              emoji: true
+            },
+            value: 'launch_to_prod'
+          }
+        }
+      ]
+    });
   }
 });
 (async () => {
