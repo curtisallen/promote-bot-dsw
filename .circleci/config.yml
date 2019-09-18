@@ -42,4 +42,3 @@ jobs:
           color: '#42e2f4'
           # mentions: 'USERID1,USERID2,'
           message: 'Everything looks great :pear:'
-          webhook: webhook
