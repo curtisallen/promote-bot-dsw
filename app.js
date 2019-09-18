@@ -43,7 +43,7 @@ app.message(subtype('bot_message'), ({ message, say }) => {
               text: 'launch to prod',
               emoji: true
             },
-            value: 'launch_to_prod'
+            value: buildCommit
           }
         }
       ]
@@ -51,10 +51,31 @@ app.message(subtype('bot_message'), ({ message, say }) => {
   }
 });
 
-app.action('launch_to_prod', ({ ack, say }) => {
-  ack();
-  say('done');
-});
+app.action(
+  { block_id: 'launch_block', action_id: 'launch_to_prod' },
+  async ({ ack, body, context, say }) => {
+    ack();
+    const { message, user, actions, channel } = body;
+    // remove the button
+    await app.client.chat.update({
+      token: context.botToken,
+      channel: channel.id,
+      text: '',
+      ts: message.ts,
+      blocks: [
+        {
+          type: 'section',
+          block_id: 'launch_block',
+          text: {
+            type: 'mrkdwn',
+            text: `:rocket: <@${user.id}> deployed \`${actions[0].value}\``
+          }
+        }
+      ]
+    });
+    // say(`<@${user.id}> launched to prod :rocket:`);
+  }
+);
 (async () => {
   await app.start(port);
   console.log(`⚡️ listening on :${port}`);
