@@ -30,12 +30,14 @@ app.message(subtype('bot_message'), ({ message, say }) => {
       blocks: [
         {
           type: 'section',
+          block_id: 'launch_block',
           text: {
             type: 'mrkdwn',
             text: `:pear: The tests have passed for build \`${buildCommit}\` Shall we deploy it?`
           },
           accessory: {
             type: 'button',
+            action_id: 'launch_to_prod',
             text: {
               type: 'plain_text',
               text: 'launch to prod',
@@ -47,6 +49,11 @@ app.message(subtype('bot_message'), ({ message, say }) => {
       ]
     });
   }
+});
+
+app.action('launch_to_prod', ({ ack, say }) => {
+  ack();
+  say('done');
 });
 (async () => {
   await app.start(port);
